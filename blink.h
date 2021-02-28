@@ -14,6 +14,8 @@ class Blink {
             next();
         }
 
+        virtual void init() { }
+
         void set_pattern(unsigned long pattern) {
             if (this->pattern != pattern) {
                 this->pattern = pattern;
@@ -62,6 +64,9 @@ class BlinkOutput : public Blink {
     public:
         BlinkOutput(unsigned int pin, unsigned long pattern = 0b10, unsigned long interval = 500, bool inverted = false)
             : Blink(pattern, interval), pin(pin), inverted(inverted) {
+        }
+
+        void init() override {
             pinMode(pin, OUTPUT);
         }
 
