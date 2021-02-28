@@ -8,7 +8,7 @@
 
 class Blink {
     public:
-        Blink(unsigned long pattern = 0b10, unsigned long interval = 500)
+        Blink(uint64_t pattern = 0b10, unsigned long interval = 500)
             : interval(interval), pattern(pattern) {
             restart_pattern();
             next();
@@ -16,14 +16,14 @@ class Blink {
 
         virtual void init() { }
 
-        void set_pattern(unsigned long pattern) {
+        void set_pattern(uint64_t pattern) {
             if (this->pattern != pattern) {
                 this->pattern = pattern;
                 restart_pattern();
             }
         }
 
-        unsigned long get_pattern() const {
+        uint64_t get_pattern() const {
             return this->pattern;
         }
 
@@ -55,14 +55,14 @@ class Blink {
         }
 
         Stopwatch stopwatch;
-        unsigned long pattern;
+        uint64_t pattern;
         unsigned char position;
 };
 
 
 class BlinkOutput : public Blink {
     public:
-        BlinkOutput(unsigned int pin, unsigned long pattern = 0b10, unsigned long interval = 500, bool inverted = false)
+        BlinkOutput(unsigned int pin, uint64_t pattern = 0b10, unsigned long interval = 500, bool inverted = false)
             : Blink(pattern, interval), pin(pin), inverted(inverted) {
         }
 
