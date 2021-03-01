@@ -10,11 +10,12 @@ class Blink {
     public:
         Blink(uint64_t pattern = 0b10, unsigned long interval = 500)
             : interval(interval), pattern(pattern) {
+        }
+
+        virtual void init() {
             restart_pattern();
             next();
         }
-
-        virtual void init() { }
 
         void set_pattern(uint64_t pattern) {
             if (this->pattern != pattern) {
@@ -68,6 +69,7 @@ class BlinkOutput : public Blink {
 
         void init() override {
             pinMode(pin, OUTPUT);
+            Blink::init();
         }
 
     protected:
