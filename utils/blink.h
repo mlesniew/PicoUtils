@@ -36,7 +36,7 @@ class Blink {
         }
 
         void restart_pattern() {
-            for (position = 31; position > 0; --position) {
+            for (position = 63; position > 0; --position) {
                 if ((pattern >> position) & 1)
                     break;
             }
