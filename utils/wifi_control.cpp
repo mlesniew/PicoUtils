@@ -38,6 +38,7 @@ void WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
         case WiFiInitMode::saved:
             {
                 Serial.println(F("Attempt to use stored WiFi credentials."));
+                WiFi.softAPdisconnect(true);
                 WiFi.begin();
                 break;
             }
