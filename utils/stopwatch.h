@@ -4,8 +4,6 @@
 #include <Arduino.h>
 
 class Stopwatch {
-        unsigned long start;
-
     public:
         Stopwatch() {
             reset();
@@ -22,6 +20,9 @@ class Stopwatch {
         void reset() {
             start = millis();
         }
+
+    protected:
+        unsigned long start;
 };
 
 #endif

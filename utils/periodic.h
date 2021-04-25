@@ -3,14 +3,15 @@
 
 #include "stopwatch.h"
 
-class Periodic {
+class Periodic : protected Stopwatch {
     public:
         Periodic(float interval_seconds) : interval_millis(interval_seconds * 1000) {
+            start = millis() - interval_millis;
         }
 
         void tick() {
-            if (stopwatch.elapsed_millis() > interval_millis) {
-                stopwatch.reset();
+            if ((elapsed_millis() > interval_millis)) {
+                reset();
                 periodic_proc();
             }
         }
@@ -18,9 +19,6 @@ class Periodic {
         virtual void periodic_proc() = 0;
 
         const unsigned long interval_millis;
-
-    protected:
-        Stopwatch stopwatch;
 };
 
 #endif
