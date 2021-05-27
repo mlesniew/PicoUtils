@@ -14,10 +14,11 @@ enum class WiFiInitMode {
 class WiFiControl {
     public:
         WiFiControl(Blink & led): led(led), previous_wifi_status(WL_NO_SHIELD) {}
-        void init(
+        bool init(
             WiFiInitMode mode = WiFiInitMode::automatic,
             const char * hostname = "ESP8266",
-            const char * password = nullptr);
+            const char * password = nullptr,
+            unsigned long timeout_seconds = 0);
         void tick();
 
     protected:

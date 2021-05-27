@@ -36,7 +36,7 @@ class WiFiManagerWithLed : public WiFiManager {
         Blink & led;
 };
 
-void WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * password) {
+bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * password, unsigned long timeout_seconds) {
     led.init();
     BackgroundBlinker bb(led);
     led.set_pattern(0b100);
@@ -49,6 +49,10 @@ void WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
         WiFiManagerWithLed * wmwl = static_cast<WiFiManagerWithLed*>(wm);
         wmwl->led.set_pattern(0b100100100 << 9);
     });
+
+    if (timeout_seconds) {
+        wifi_manager.setConfigPortalTimeout(timeout_seconds);
+    }
 
     switch (mode) {
         case WiFiInitMode::automatic: {
@@ -68,6 +72,8 @@ void WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
             break;
         }
     }
+
+    return WiFi.status() == WL_CONNECTED;
 }
 
 void WiFiControl::tick() {
