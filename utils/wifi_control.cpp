@@ -74,13 +74,11 @@ bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
         }
     }
 
-    MDNS.begin(hostname);
+    mdns_name = hostname;
     return WiFi.status() == WL_CONNECTED;
 }
 
 void WiFiControl::tick() {
-    MDNS.update();
-
     wl_status_t current_wifi_status = WiFi.status();
 
     if (current_wifi_status != previous_wifi_status) {
@@ -105,6 +103,9 @@ void WiFiControl::tick() {
                 Serial.print(F(" "));
                 Serial.println(WiFi.dnsIP(1));
                 led.set_pattern(uint64_t(1) << 60);
+                // restart mDNS
+                MDNS.close();
+                MDNS.begin(mdns_name);
                 break;
             case WL_DISCONNECTED:
                 led.set_pattern(0);
@@ -114,6 +115,8 @@ void WiFiControl::tick() {
                 break;
         }
         previous_wifi_status = current_wifi_status;
+    } else if (current_wifi_status == WL_CONNECTED) {
+        MDNS.update();
     }
 
     led.tick();

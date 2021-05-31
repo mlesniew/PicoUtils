@@ -1,6 +1,7 @@
 #ifndef WIFI_CONTROL_H
 #define WIFI_CONTROL_H
 
+#include <Arduino.h>
 #include <ESP8266WiFi.h>
 
 class Blink;
@@ -24,6 +25,7 @@ class WiFiControl {
     protected:
         Blink & led;
         wl_status_t previous_wifi_status;
+        String mdns_name;
 };
 
 #endif
