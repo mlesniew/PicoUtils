@@ -1,4 +1,5 @@
 #include <WiFiManager.h>
+#include <ESP8266mDNS.h>
 
 #include "wifi_control.h"
 #include "led.h"
@@ -73,10 +74,13 @@ bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
         }
     }
 
+    MDNS.begin(hostname);
     return WiFi.status() == WL_CONNECTED;
 }
 
 void WiFiControl::tick() {
+    MDNS.update();
+
     wl_status_t current_wifi_status = WiFi.status();
 
     if (current_wifi_status != previous_wifi_status) {
