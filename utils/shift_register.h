@@ -1,8 +1,19 @@
 #ifndef SHIFT_REGISTER_H
 #define SHIFT_REGISTER_H
 
+#include "io.h"
+
+class ShiftRegisterInterface {
+public:
+    virtual void init() {}
+    virtual void reset() = 0;
+    virtual void write_only(uint8_t bit, bool value) = 0;
+    virtual void write(uint8_t bit, bool value) = 0;
+    virtual void send() const = 0;
+};
+
 template <uint8_t elements>
-class ShiftRegister {
+class ShiftRegister: public ShiftRegisterInterface {
 
 public:
     ShiftRegister(uint8_t data_pin, uint8_t clck_pin, uint8_t ltch_pin, const uint8_t inverted[])
@@ -53,6 +64,20 @@ public:
 protected:
     uint8_t state[elements];
     const uint8_t * inverted;
+};
+
+class ShiftRegisterOutput: public BinaryOutput {
+    public:
+        ShiftRegisterOutput(ShiftRegisterInterface & shift_register, uint8_t output_idx)
+            : shift_register(shift_register), output_idx(output_idx) {}
+
+        void set(const bool value) {
+            shift_register.write(output_idx, value);
+        }
+
+    protected:
+        ShiftRegisterInterface & shift_register;
+        uint8_t output_idx;
 };
 
 #endif
