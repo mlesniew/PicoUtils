@@ -2,7 +2,7 @@
 #include <ESP8266mDNS.h>
 
 #include "wifi_control.h"
-#include "led.h"
+#include "blink.h"
 
 namespace {
 
@@ -33,22 +33,22 @@ const __FlashStringHelper * status_to_string(wl_status_t status) {
 
 class WiFiManagerWithLed : public WiFiManager {
     public:
-        WiFiManagerWithLed(Blink & led) : WiFiManager(), led(led) {}
-        Blink & led;
+        WiFiManagerWithLed(Blink & led_blinker) : WiFiManager(), blink(blink) {}
+        Blink & blink;
 };
 
 bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * password, unsigned long timeout_seconds) {
-    led.init();
-    BackgroundBlinker bb(led);
-    led.set_pattern(0b100);
+    led_blinker.init();
+    BackgroundBlinker bb(led_blinker);
+    led_blinker.set_pattern(0b100);
 
     WiFi.hostname(hostname);
     WiFi.setAutoReconnect(true);
 
-    WiFiManagerWithLed wifi_manager{led};
+    WiFiManagerWithLed wifi_manager{led_blinker};
     wifi_manager.setAPCallback([](WiFiManager * wm) {
         WiFiManagerWithLed * wmwl = static_cast<WiFiManagerWithLed*>(wm);
-        wmwl->led.set_pattern(0b100100100 << 9);
+        wmwl->blink.set_pattern(0b100100100 << 9);
     });
 
     if (timeout_seconds) {
@@ -63,7 +63,7 @@ bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
         case WiFiInitMode::setup: {
             Serial.println(F("WiFi setup mode requested, starting AP..."));
             wifi_manager.startConfigPortal(hostname, password);
-            led.set_pattern(0b10);
+            led_blinker.set_pattern(0b10);
             break;
         }
         case WiFiInitMode::saved: {
@@ -102,16 +102,16 @@ void WiFiControl::tick() {
                 Serial.print(WiFi.dnsIP(0));
                 Serial.print(F(" "));
                 Serial.println(WiFi.dnsIP(1));
-                led.set_pattern(uint64_t(1) << 60);
+                led_blinker.set_pattern(uint64_t(1) << 60);
                 // restart mDNS
                 MDNS.close();
                 MDNS.begin(mdns_name);
                 break;
             case WL_DISCONNECTED:
-                led.set_pattern(0);
+                led_blinker.set_pattern(0);
                 break;
             default:
-                led.set_pattern(0b100);
+                led_blinker.set_pattern(0b100);
                 break;
         }
         previous_wifi_status = current_wifi_status;
@@ -119,5 +119,5 @@ void WiFiControl::tick() {
         MDNS.update();
     }
 
-    led.tick();
+    led_blinker.tick();
 }

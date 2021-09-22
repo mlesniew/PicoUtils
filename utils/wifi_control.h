@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 
-class Blink;
+#include "blink.h"
 
 enum class WiFiInitMode {
     automatic,
@@ -14,7 +14,7 @@ enum class WiFiInitMode {
 
 class WiFiControl {
     public:
-        WiFiControl(Blink & led): led(led), previous_wifi_status(WL_NO_SHIELD) {}
+        WiFiControl(BinaryOutput & led): led_blinker(led, 0, 91), previous_wifi_status(WL_NO_SHIELD) {}
         bool init(
             WiFiInitMode mode = WiFiInitMode::automatic,
             const char * hostname = "ESP8266",
@@ -23,7 +23,7 @@ class WiFiControl {
         void tick();
 
     protected:
-        Blink & led;
+        Blink led_blinker;
         wl_status_t previous_wifi_status;
         String mdns_name;
 };

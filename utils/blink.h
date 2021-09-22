@@ -4,15 +4,17 @@
 #include <Arduino.h>
 #include <Ticker.h>
 
+#include "io.h"
 #include "stopwatch.h"
 
 class Blink {
     public:
-        Blink(uint64_t pattern = 0b10, unsigned long interval = 500)
-            : interval(interval), pattern(pattern) {
+        Blink(BinaryOutput & output, uint64_t pattern = 0b10, unsigned long interval = 500)
+            : interval(interval), output(output), pattern(pattern) {
         }
 
-        virtual void init() {
+        void init() {
+            output.init();
             restart_pattern();
             next();
         }
@@ -44,41 +46,18 @@ class Blink {
 
         const unsigned long interval;
 
-    protected:
-        virtual void set(bool state) = 0;
-
     private:
         void next() {
             bool led_on = (pattern >> position) & 1;
-            set(led_on);
+            output.set(led_on);
             if (position-- == 0)
                 restart_pattern();
         }
 
+        BinaryOutput & output;
         Stopwatch stopwatch;
         uint64_t pattern;
         unsigned char position;
-};
-
-
-class BlinkOutput : public Blink {
-    public:
-        BlinkOutput(unsigned int pin, uint64_t pattern = 0b10, unsigned long interval = 500, bool inverted = false)
-            : Blink(pattern, interval), pin(pin), inverted(inverted) {
-        }
-
-        void init() override {
-            pinMode(pin, OUTPUT);
-            Blink::init();
-        }
-
-    protected:
-        void set(bool state) override {
-            digitalWrite(pin, (state != inverted) ? HIGH : LOW);
-        }
-
-        const unsigned int pin;
-        const bool inverted;
 };
 
 class BackgroundBlinker {
