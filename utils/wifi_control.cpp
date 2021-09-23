@@ -33,8 +33,8 @@ const __FlashStringHelper * status_to_string(wl_status_t status) {
 
 class WiFiManagerWithLed : public WiFiManager {
     public:
-        WiFiManagerWithLed(Blink & led_blinker) : WiFiManager(), blink(blink) {}
-        Blink & blink;
+        WiFiManagerWithLed(Blink & led_blinker) : WiFiManager(), led_blinker(led_blinker) {}
+        Blink & led_blinker;
 };
 
 bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * password, unsigned long timeout_seconds) {
@@ -48,7 +48,7 @@ bool WiFiControl::init(WiFiInitMode mode, const char * hostname, const char * pa
     WiFiManagerWithLed wifi_manager{led_blinker};
     wifi_manager.setAPCallback([](WiFiManager * wm) {
         WiFiManagerWithLed * wmwl = static_cast<WiFiManagerWithLed*>(wm);
-        wmwl->blink.set_pattern(0b100100100 << 9);
+        wmwl->led_blinker.set_pattern(0b100100100 << 9);
     });
 
     if (timeout_seconds) {
