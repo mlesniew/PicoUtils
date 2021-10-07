@@ -9,7 +9,7 @@ class Periodic : protected Stopwatch {
             start = millis() - interval_millis;
         }
 
-        void tick() {
+        virtual void tick() {
             if ((elapsed_millis() > interval_millis)) {
                 reset();
                 periodic_proc();
