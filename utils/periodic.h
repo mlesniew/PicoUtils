@@ -2,14 +2,15 @@
 #define ARDUINO_UTILS_PERIODIC_H
 
 #include "stopwatch.h"
+#include "tickable.h"
 
-class Periodic : protected Stopwatch {
+class Periodic : protected Stopwatch, public Tickable {
     public:
         Periodic(float interval_seconds) : interval_millis(interval_seconds * 1000) {
             start = millis() - interval_millis;
         }
 
-        virtual void tick() {
+        void tick() final override {
             if ((elapsed_millis() > interval_millis)) {
                 reset();
                 periodic_proc();

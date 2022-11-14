@@ -5,6 +5,7 @@
 #include <ESP8266WiFi.h>
 
 #include "blink.h"
+#include "tickable.h"
 
 enum class WiFiInitMode {
     automatic,
@@ -12,7 +13,7 @@ enum class WiFiInitMode {
     setup,
 };
 
-class WiFiControl {
+class WiFiControl: public Tickable {
     public:
         WiFiControl(BinaryOutput & led): led_blinker(led, 0, 91), previous_wifi_status(WL_NO_SHIELD) {}
         bool init(
@@ -20,7 +21,7 @@ class WiFiControl {
             const char * hostname = "ESP8266",
             const char * password = nullptr,
             unsigned long timeout_seconds = 0);
-        void tick();
+        void tick() override;
 
     protected:
         Blink led_blinker;

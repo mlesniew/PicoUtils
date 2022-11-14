@@ -6,8 +6,9 @@
 
 #include "io.h"
 #include "stopwatch.h"
+#include "tickable.h"
 
-class Blink {
+class Blink: public Tickable {
     public:
         Blink(BinaryOutput & output, uint64_t pattern = 0b10, unsigned long interval = 500)
             : interval(interval), output(output), pattern(pattern) {
@@ -30,7 +31,7 @@ class Blink {
             return this->pattern;
         }
 
-        void tick() {
+        void tick() override {
             if (stopwatch.elapsed_millis() > interval) {
                 next();
                 stopwatch.reset();
