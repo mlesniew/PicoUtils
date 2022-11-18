@@ -6,8 +6,8 @@
 
 class Periodic : protected Stopwatch, public Tickable {
     public:
-        Periodic(float interval_seconds) : interval_millis(interval_seconds * 1000) {
-            start = millis() - interval_millis;
+        Periodic(float interval_seconds, float first_run_after = 0) : interval_millis(interval_seconds * 1000) {
+            start = millis() - interval_millis + (unsigned long)(first_run_after * 1000);
         }
 
         void tick() final override {
