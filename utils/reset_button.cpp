@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "reset.h"
 #include "reset_button.h"
 
 void ResetButton::init() {
@@ -15,6 +14,6 @@ void ResetButton::tick() {
     // button is pressed, check stopwatch
     if (stopwatch.elapsed() >= timeout) {
         Serial.println(F("Software reset requested by holding the reset button."));
-        reset();
+        ESP.restart();
     }
 }
