@@ -1,8 +1,10 @@
-#ifndef ARDUINO_UTILS_BLINK_H
-#define ARDUINO_UTILS_BLINK_H
+#pragma once
 
 #include <Arduino.h>
+
+#if defined(ESP8266) || defined(ESP32)
 #include <Ticker.h>
+#endif
 
 #include "io.h"
 #include "stopwatch.h"
@@ -40,8 +42,9 @@ class Blink: public Tickable {
 
         void restart_pattern() {
             for (position = 63; position > 0; --position) {
-                if ((pattern >> position) & 1)
+                if ((pattern >> position) & 1) {
                     break;
+                }
             }
         }
 
@@ -51,8 +54,9 @@ class Blink: public Tickable {
         void next() {
             bool led_on = (pattern >> position) & 1;
             output.set(led_on);
-            if (position-- == 0)
+            if (position-- == 0) {
                 restart_pattern();
+            }
         }
 
         BinaryOutput & output;
@@ -61,6 +65,7 @@ class Blink: public Tickable {
         unsigned char position;
 };
 
+#if defined(ESP8266) || defined(ESP32)
 class BackgroundBlinker {
     public:
         BackgroundBlinker(Blink & blink) : blink(blink) {
@@ -74,5 +79,4 @@ class BackgroundBlinker {
         Blink & blink;
         Ticker ticker;
 };
-
 #endif

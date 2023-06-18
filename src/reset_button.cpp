@@ -2,7 +2,9 @@
 #include "reset_button.h"
 
 void ResetButton::init() {
+#if defined(ESP8266) || defined(ESP32)
     ticker.attach(0.2, [this] { tick(); });
+#endif
 }
 
 void ResetButton::tick() {

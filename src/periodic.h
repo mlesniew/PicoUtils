@@ -1,5 +1,4 @@
-#ifndef ARDUINO_UTILS_PERIODIC_H
-#define ARDUINO_UTILS_PERIODIC_H
+#pragma once
 
 #include "stopwatch.h"
 #include "tickable.h"
@@ -21,5 +20,3 @@ class Periodic : protected Stopwatch, public Tickable {
 
         const unsigned long interval_millis;
 };
-
-#endif

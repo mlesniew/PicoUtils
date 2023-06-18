@@ -1,5 +1,4 @@
-#ifndef ARDUINO_UTILS_STOPWATCH_H
-#define ARDUINO_UTILS_STOPWATCH_H
+#pragma once
 
 #include <Arduino.h>
 
@@ -24,5 +23,3 @@ class Stopwatch {
     protected:
         unsigned long start;
 };
-
-#endif

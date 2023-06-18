@@ -1,5 +1,4 @@
-#ifndef ARDUINO_UTILS_PERIODIC_RUN_H
-#define ARDUINO_UTILS_PERIODIC_RUN_H
+#pragma once
 
 #include <functional>
 
@@ -21,5 +20,3 @@ class PeriodicRun: public Periodic {
 
         const std::function<void()> callback;
 };
-
-#endif
