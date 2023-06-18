@@ -24,6 +24,9 @@ class ResetButton: public Tickable {
     protected:
 #if defined(ESP8266) || defined(ESP32)
         Ticker ticker;
+        static void tick_proc(void * self) {
+            ((ResetButton *)(self))->tick();
+        }
 #endif
         Stopwatch stopwatch;
 };

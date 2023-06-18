@@ -5,7 +5,7 @@ namespace PicoUtils {
 
 void ResetButton::init() {
 #if defined(ESP8266) || defined(ESP32)
-    ticker.attach(0.2, [this] { tick(); });
+    ticker.attach(0.2, tick_proc, (void *) this);
 #endif
 }
 
