@@ -2,6 +2,8 @@
 
 #include "stopwatch.h"
 
+namespace PicoUtils {
+
 class Timeout: public Stopwatch {
     public:
         Timeout(float timeout): timeout(timeout) {}
@@ -24,3 +26,5 @@ class Timeout: public Stopwatch {
 
         mutable float timeout;
 };
+
+}

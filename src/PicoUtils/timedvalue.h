@@ -2,6 +2,8 @@
 
 #include "stopwatch.h"
 
+namespace PicoUtils {
+
 template <typename T>
 class TimedValue {
     public:
@@ -26,3 +28,5 @@ class TimedValue {
         T value;
         Stopwatch stopwatch;
 };
+
+}

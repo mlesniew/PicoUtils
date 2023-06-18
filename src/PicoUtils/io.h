@@ -4,6 +4,8 @@
 
 #include <Arduino.h>
 
+namespace PicoUtils {
+
 class BinaryInput {
     public:
         virtual void init() {}
@@ -67,3 +69,5 @@ struct PinOutput: public BinaryOutput {
             digitalWrite(pin, value != inverted);
         }
 };
+
+}

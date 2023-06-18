@@ -3,6 +3,8 @@
 #include "stopwatch.h"
 #include "tickable.h"
 
+namespace PicoUtils {
+
 class Periodic : protected Stopwatch, public Tickable {
     public:
         Periodic(float interval_seconds, float first_run_after = 0) : interval_millis(interval_seconds * 1000) {
@@ -20,3 +22,5 @@ class Periodic : protected Stopwatch, public Tickable {
 
         const unsigned long interval_millis;
 };
+
+}

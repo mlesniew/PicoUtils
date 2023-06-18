@@ -2,6 +2,8 @@
 
 #include "io.h"
 
+namespace PicoUtils {
+
 class ShiftRegisterInterface {
     public:
         virtual void init() {}
@@ -80,3 +82,5 @@ class ShiftRegisterOutput: public BinaryOutput {
         ShiftRegisterInterface & shift_register;
         uint8_t output_idx;
 };
+
+}

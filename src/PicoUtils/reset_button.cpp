@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "reset_button.h"
 
+namespace PicoUtils {
+
 void ResetButton::init() {
 #if defined(ESP8266) || defined(ESP32)
     ticker.attach(0.2, [this] { tick(); });
@@ -18,4 +20,6 @@ void ResetButton::tick() {
         Serial.println(F("Software reset requested by holding the reset button."));
         ESP.restart();
     }
+}
+
 }

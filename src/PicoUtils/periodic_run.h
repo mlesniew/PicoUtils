@@ -4,6 +4,8 @@
 
 #include "periodic.h"
 
+namespace PicoUtils {
+
 class PeriodicRun: public Periodic {
     public:
         PeriodicRun(float interval_seconds, float first_run_after, std::function<void()> callback)
@@ -20,3 +22,5 @@ class PeriodicRun: public Periodic {
 
         const std::function<void()> callback;
 };
+
+}

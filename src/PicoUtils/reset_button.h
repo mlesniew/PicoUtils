@@ -8,6 +8,8 @@
 #include "stopwatch.h"
 #include "tickable.h"
 
+namespace PicoUtils {
+
 class ResetButton: public Tickable {
     public:
         ResetButton(const BinaryInput & input, float timeout = 5.0)
@@ -25,3 +27,5 @@ class ResetButton: public Tickable {
 #endif
         Stopwatch stopwatch;
 };
+
+}

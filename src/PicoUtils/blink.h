@@ -10,6 +10,8 @@
 #include "stopwatch.h"
 #include "tickable.h"
 
+namespace PicoUtils {
+
 class Blink: public Tickable {
     public:
         Blink(BinaryOutput & output, uint64_t pattern = 0b10, unsigned long interval = 500)
@@ -80,3 +82,5 @@ class BackgroundBlinker {
         Ticker ticker;
 };
 #endif
+
+}

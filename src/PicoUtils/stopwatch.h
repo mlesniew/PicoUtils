@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 
+namespace PicoUtils {
+
 class Stopwatch {
     public:
         Stopwatch() {
@@ -23,3 +25,5 @@ class Stopwatch {
     protected:
         unsigned long start;
 };
+
+}
