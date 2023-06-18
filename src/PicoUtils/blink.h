@@ -71,7 +71,7 @@ class Blink: public Tickable {
 class BackgroundBlinker {
     public:
         BackgroundBlinker(Blink & blink) : blink(blink) {
-            ticker.attach(float(blink.interval) * 0.001, [&blink] { blink.tick(); });
+            ticker.attach(float(blink.interval) * 0.001, tick_proc, (void *) this);
         }
         ~BackgroundBlinker() {
             ticker.detach();
@@ -80,6 +80,10 @@ class BackgroundBlinker {
     private:
         Blink & blink;
         Ticker ticker;
+
+        static void tick_proc(void * self) {
+            ((BackgroundBlinker *)(self))->blink.tick();
+        }
 };
 #endif
 
