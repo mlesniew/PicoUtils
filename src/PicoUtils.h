@@ -10,3 +10,4 @@
 #include "PicoUtils/periodic.h"
 #include "PicoUtils/blink.h"
 #include "PicoUtils/tickable.h"
+#include "PicoUtils/wifi_control.h"
