@@ -2,6 +2,7 @@
 
 #include "PicoUtils/blink.h"
 #include "PicoUtils/io.h"
+#include "PicoUtils/json_config.h"
 #include "PicoUtils/periodic.h"
 #include "PicoUtils/periodic_run.h"
 #include "PicoUtils/reset_button.h"
