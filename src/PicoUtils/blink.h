@@ -71,6 +71,7 @@ class Blink: public Tickable {
 class BackgroundBlinker {
     public:
         BackgroundBlinker(Blink & blink) : blink(blink) {
+            blink.init();
             ticker.attach(float(blink.interval) * 0.001, tick_proc, (void *) this);
         }
         ~BackgroundBlinker() {
