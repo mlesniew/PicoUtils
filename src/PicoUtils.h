@@ -12,4 +12,5 @@
 #include "PicoUtils/tickable.h"
 #include "PicoUtils/timedvalue.h"
 #include "PicoUtils/timeout.h"
+#include "PicoUtils/watch.h"
 #include "PicoUtils/wifi_control.h"
