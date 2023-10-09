@@ -4,8 +4,13 @@
 
 namespace PicoUtils {
 
+class WatchInterface: public Tickable {
+    public:
+        virtual void fire() = 0;
+};
+
 template <typename T>
-class Watch: public Tickable {
+class Watch: public WatchInterface {
     public:
         Watch(std::function<T()> getter, std::function<void(T)> callback):
             callback(callback), getter(getter), old_value(T(getter())) {
@@ -23,7 +28,7 @@ class Watch: public Tickable {
             }
         }
 
-        void fire() const {
+        void fire() override {
             old_value = getter();
             callback(old_value);
         }
