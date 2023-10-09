@@ -5,7 +5,7 @@
 namespace PicoUtils {
 
 template <typename T>
-class Watch {
+class Watch: public Tickable {
     public:
         Watch(std::function<T()> getter, std::function<void(T)> callback):
             callback(callback), getter(getter), old_value(T(getter())) {
@@ -15,7 +15,7 @@ class Watch {
             callback([change_callback](T) { change_callback(); }), getter(getter), old_value(T(getter())) {
         }
 
-        void tick() const {
+        void tick() override {
             T new_value = getter();
             if (new_value != old_value) {
                 callback(new_value);
@@ -35,7 +35,7 @@ class Watch {
 };
 
 template <>
-inline void Watch<double>::tick() const {
+inline void Watch<double>::tick() {
     double new_value = getter();
     const bool old_nan = std::isnan(old_value);
     const bool new_nan = std::isnan(new_value);
@@ -46,7 +46,7 @@ inline void Watch<double>::tick() const {
 }
 
 template <>
-inline void Watch<float>::tick() const {
+inline void Watch<float>::tick() {
     float new_value = getter();
     const bool old_nan = std::isnan(old_value);
     const bool new_nan = std::isnan(new_value);
