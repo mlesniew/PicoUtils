@@ -10,6 +10,7 @@ class ShiftRegisterInterface {
         virtual void reset() = 0;
         virtual void write_only(uint8_t bit, bool value) = 0;
         virtual void write(uint8_t bit, bool value) = 0;
+        virtual bool read(uint8_t bit) const = 0;
         virtual void send() const = 0;
 };
 
@@ -50,6 +51,12 @@ class ShiftRegister: public ShiftRegisterInterface {
             send();
         }
 
+        bool read(uint8_t bit) const {
+            uint8_t idx = bit >> 3;
+            uint8_t mask = 1 << (bit & 0x7);
+            return state[idx] & mask;
+        }
+
         void send() const {
             const uint8_t * v = state;
             const uint8_t * m = inverted;
@@ -74,13 +81,16 @@ class ShiftRegisterOutput: public BinaryOutput {
         ShiftRegisterOutput(ShiftRegisterInterface & shift_register, uint8_t output_idx)
             : shift_register(shift_register), output_idx(output_idx) {}
 
-        void set(const bool value) {
+        void set(const bool value) override {
             shift_register.write(output_idx, value);
         }
 
-    protected:
+        bool get() const override {
+            return shift_register.read(output_idx);
+        }
+
         ShiftRegisterInterface & shift_register;
-        uint8_t output_idx;
+        const uint8_t output_idx;
 };
 
 }

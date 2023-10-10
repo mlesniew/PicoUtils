@@ -17,6 +17,7 @@ class BinaryOutput {
     public:
         virtual void init() {};
         virtual void set(bool value) = 0;
+        virtual bool get() const = 0;
 
         const BinaryOutput & operator=(const bool value) {
             set(value);
@@ -34,6 +35,7 @@ class DummyOutput: public BinaryOutput {
     public:
         void init() override {}
         void set(bool value) override {}
+        bool get() const override { return false; }
 };
 
 class VirtualOutput: public BinaryOutput {
@@ -41,7 +43,7 @@ class VirtualOutput: public BinaryOutput {
         VirtualOutput(): state(false) {}
         void init() override {}
         void set(bool value) override { state = value; }
-        bool get() const { return state; }
+        bool get() const override { return state; }
     protected:
         bool state;
 };
@@ -60,13 +62,22 @@ struct PinInput: public BinaryInput {
 
 template <uint8_t pin, bool inverted>
 struct PinOutput: public BinaryOutput {
+    protected:
+        bool value;
+
     public:
         void init() override {
             pinMode(pin, OUTPUT);
+            value = false;
         }
 
         void set(bool value) override {
+            this->value = value;
             digitalWrite(pin, value != inverted);
+        }
+
+        bool get() const override {
+            return value;
         }
 };
 
