@@ -48,9 +48,19 @@ class VirtualOutput: public BinaryOutput {
         bool state;
 };
 
-template <uint8_t pin, bool inverted = false>
-struct PinInput: public BinaryInput {
+struct Pin {
     public:
+        Pin(uint8_t pin, bool inverted = false)
+            : pin(pin), inverted(inverted) {}
+
+        const uint8_t pin;
+        const bool inverted;
+};
+
+struct PinInput: public BinaryInput, public Pin {
+    public:
+        using Pin::Pin;
+
         void init() override {
             pinMode(pin, INPUT);
         }
@@ -58,14 +68,13 @@ struct PinInput: public BinaryInput {
         bool get() const override {
             return (digitalRead(pin) == HIGH) != inverted;
         }
+
 };
 
-template <uint8_t pin, bool inverted>
-struct PinOutput: public BinaryOutput {
-    protected:
-        bool value;
-
+struct PinOutput: public BinaryOutput, public Pin {
     public:
+        using Pin::Pin;
+
         void init() override {
             pinMode(pin, OUTPUT);
             value = false;
@@ -79,6 +88,9 @@ struct PinOutput: public BinaryOutput {
         bool get() const override {
             return value;
         }
+
+    protected:
+        bool value;
 };
 
 }
