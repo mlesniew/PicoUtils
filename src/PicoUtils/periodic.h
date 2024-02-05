@@ -20,7 +20,7 @@ class Periodic : protected Stopwatch, public Tickable {
 
         virtual void periodic_proc() = 0;
 
-        const unsigned long interval_millis;
+        unsigned long interval_millis;
 };
 
 }
