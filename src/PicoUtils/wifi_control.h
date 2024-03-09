@@ -169,7 +169,7 @@ class WiFiControlSetup: public WiFiMonitor {
                     configure();
                     if (WiFi.status() == WL_CONNECTED) {
                         Serial.println(F("Setup failed.  Reset..."));
-                        ESP.reset();
+                        ESP.restart();
                     }
                     break;
                 }
