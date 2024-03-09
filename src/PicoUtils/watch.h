@@ -23,14 +23,18 @@ class Watch: public WatchInterface {
         void tick() override {
             T new_value = getter();
             if (new_value != old_value) {
-                callback(new_value);
                 old_value = new_value;
+                callback(new_value);
             }
         }
 
         void fire() override {
             old_value = getter();
             callback(old_value);
+        }
+
+        const T & get_value() const {
+            return old_value;
         }
 
     protected:
